@@ -43,7 +43,8 @@ def get_guard_minutes(sleep_times):
     return _minutes
 
 
-guard_id, stimes = get_max_guard(get_guards())
-minutes = get_guard_minutes(stimes)
-max_minute = minutes.index(max(minutes))
-print int(guard_id) * max_minute
+if __name__ == '__main__':
+    guard_id, stimes = get_max_guard(get_guards())
+    minutes = get_guard_minutes(stimes)
+    max_minute = minutes.index(max(minutes))
+    print int(guard_id) * max_minute
