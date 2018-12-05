@@ -1,4 +1,7 @@
+import re
+
 cloth = {}
+
 
 def iterate_map(id, xoffset, yoffset, width, height):
     for row in range(0, height):
@@ -12,11 +15,8 @@ def iterate_map(id, xoffset, yoffset, width, height):
             cloth[y][x] += 1
 
 
-def parse_claim(line):
-    claim_id, rmdr = line.split(' @ ')
-    xoffset, rmdr = rmdr.split(',')
-    yoffset, rmdr = rmdr.split(': ')
-    width, height = rmdr.split('x')
+def parse_claim(claim):
+    claim_id, xoffset, yoffset, width, height = re.match(r'#(\d+) @ (\d+),(\d+): (\d+)x(\d+)', claim).groups()
     return claim_id, int(xoffset), int(yoffset), int(width), int(height)
 
 
@@ -36,4 +36,4 @@ with open('source.txt') as source:
     for claim in claims:
         claim_id, xoffset, yoffset, width, height = parse_claim(claim)
         if check_claim(xoffset, yoffset, width, height):
-             print claim_id
+            print claim_id
