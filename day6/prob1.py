@@ -46,8 +46,8 @@ def get_closest_coord(coords, x, y):
 
 
 def get_color(idx, num_colors):
-    """ We create colors at intervals of int(0xffffff) / input_length
-        Black (#000000) is reserved for double matches. Other colors are interval * idx + interval
+    """ Create interval colors by varying the hue with constant saturation and value
+        Number of colors is equivalent to number of coordinate points
     """
     interval = 1 / float(num_colors)
     r, g, b = colorsys.hsv_to_rgb(idx * interval, 1.0, 1.0)
@@ -56,9 +56,9 @@ def get_color(idx, num_colors):
 
 
 def calc_areas(coords):
-    # if os.path.exists('output.html'):
-    #     os.remove('output.html')
-    # output = open('output.html', 'a')  # filled in
+    """ Calculate the total areas for each coordinate point
+        Create a visualization image using PIL with one pixel per cartesian coordinate
+    """
     areas = [0] * len(coords)
     xmin, xmax, ymin, ymax = get_boundaries(coords)
     img = Image.new('RGB', (xmax - xmin + 1, ymax - ymin + 1))
@@ -77,14 +77,10 @@ def calc_areas(coords):
                 if coord_idx is not None:
                     areas[coord_idx] += 1
                     # closest coordinate color
-                    try:
-                        pixels[pixel_x, pixel_y] = get_color(coord_idx, len(coords))
-                    except:
-                        import pdb;
-                        pdb.set_trace()
+                    pixels[pixel_x, pixel_y] = get_color(coord_idx, len(coords))
                 else:
-                    pixels[pixel_x, pixel_y] = 0, 0, 0
                     # one or more coordinate points are equidistant
+                    pixels[pixel_x, pixel_y] = 0, 0, 0
 
     # check boundaries for finiteness
     def wipe_area(x, y):
