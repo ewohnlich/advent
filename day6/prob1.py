@@ -1,5 +1,6 @@
 import colorsys
-import os
+
+from PIL import Image
 
 
 def get_coords():
@@ -44,41 +45,46 @@ def get_closest_coord(coords, x, y):
         return coord_idx
 
 
-def get_color(idx, num_coords):
+def get_color(idx, num_colors):
     """ We create colors at intervals of int(0xffffff) / input_length
         Black (#000000) is reserved for double matches. Other colors are interval * idx + interval
     """
-    num_colors = num_coords + 1  # num coords + 1 for black border
     interval = 1 / float(num_colors)
     r, g, b = colorsys.hsv_to_rgb(idx * interval, 1.0, 1.0)
 
-    color = "{0:02x}{1:02x}{2:02x}".format(int(r * 255), int(g * 255), int(b * 255))
-    return color
+    return int(r * 255), int(g * 255), int(b * 255)
 
 
 def calc_areas(coords):
-    if os.path.exists('output.html'):
-        os.remove('output.html')
-    output = open('output.html', 'a')  # filled in
+    # if os.path.exists('output.html'):
+    #     os.remove('output.html')
+    # output = open('output.html', 'a')  # filled in
     areas = [0] * len(coords)
     xmin, xmax, ymin, ymax = get_boundaries(coords)
+    img = Image.new('RGB', (xmax - xmin + 1, ymax - ymin + 1))
+    pixels = img.load()
 
     for y in range(ymin, ymax + 1):
         for x in range(xmin, xmax + 1):
+            pixel_x = x - xmin
+            pixel_y = y - ymin
             if (x, y) in coords:
                 areas[coords.index((x, y))] += 1
-                # list of coordinates
-                output.write(html_block.format(color='ffffff', size=block_size))
+                # list of coordinate points
+                pixels[pixel_x, pixel_y] = 255, 255, 255
             else:
                 coord_idx = get_closest_coord(coords, x, y)
                 if coord_idx is not None:
                     areas[coord_idx] += 1
                     # closest coordinate color
-                    output.write(html_block.format(color=get_color(coord_idx, len(coords)), size=block_size))
+                    try:
+                        pixels[pixel_x, pixel_y] = get_color(coord_idx, len(coords))
+                    except:
+                        import pdb;
+                        pdb.set_trace()
                 else:
+                    pixels[pixel_x, pixel_y] = 0, 0, 0
                     # one or more coordinate points are equidistant
-                    output.write(html_block.format(color='000000', size=block_size))
-        output.write('<br/>')
 
     # check boundaries for finiteness
     def wipe_area(x, y):
@@ -99,7 +105,7 @@ def calc_areas(coords):
         y = ymax - 1
         wipe_area(x, y)
     print max(areas)
-    output.close()
+    img.save('output.png', format='png')
 
 
 if __name__ == '__main__':
