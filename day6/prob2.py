@@ -1,9 +1,10 @@
 from prob1 import get_coords, get_manhattan, get_boundaries
 
+
 def get_distances(coords, x, y):
     total = 0
     for coord in coords:
-        total += get_manhattan(coord, (x,y))
+        total += get_manhattan(coord, (x, y))
     return total
 
 

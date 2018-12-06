@@ -12,7 +12,7 @@ def get_coords():
 
 
 html_block = '<div style="height:{size}px; width: {size}px; background-color: #{color}; margin:0; padding: 0; display: inline-block"></div>'
-
+block_size = 3
 sample = [
     (1, 1),  # A*
     (1, 6),  # B*
@@ -59,7 +59,7 @@ def get_color(idx, num_coords):
 def calc_areas(coords):
     if os.path.exists('output.html'):
         os.remove('output.html')
-    output = open('output.html', 'a')
+    output = open('output.html', 'a')  # filled in
     areas = [0] * len(coords)
     xmin, xmax, ymin, ymax = get_boundaries(coords)
 
@@ -67,14 +67,17 @@ def calc_areas(coords):
         for x in range(xmin, xmax + 1):
             if (x, y) in coords:
                 areas[coords.index((x, y))] += 1
-                output.write(html_block.format(color=get_color(coords.index((x, y)), len(coords)), size=1))
+                # list of coordinates
+                output.write(html_block.format(color='ffffff', size=block_size))
             else:
                 coord_idx = get_closest_coord(coords, x, y)
-                if coord_idx:
+                if coord_idx is not None:
                     areas[coord_idx] += 1
-                    output.write(html_block.format(color=get_color(coord_idx, len(coords)), size=1))
+                    # closest coordinate color
+                    output.write(html_block.format(color=get_color(coord_idx, len(coords)), size=block_size))
                 else:
-                    output.write(html_block.format(color='000000', size=1))
+                    # one or more coordinate points are equidistant
+                    output.write(html_block.format(color='000000', size=block_size))
         output.write('<br/>')
 
     # check boundaries for finiteness
