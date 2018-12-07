@@ -40,9 +40,17 @@ def run_steps_workers(steps, dependencies):
                 del in_progress[step]
                 remove_deps(dependencies, step)
         workers = map(progress, workers)
-        second += 1
+        delta = 1
+        busy_workers = [w for w in workers if w]
+        if busy_workers:
+            delta = min(busy_workers)
+        second += delta
     return second
 
 
 if __name__ == '__main__':
+    import time
+    start = time.time()
     print run_steps_workers(*get_steps('source.txt'))
+
+    print time.time() - start

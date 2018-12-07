@@ -8,8 +8,7 @@ def get_steps(source='source.txt'):
         for step in source.readlines():
             step, dependency = re.match(r'Step ([A-Z]) must be finished before step ([A-Z]) can begin.',
                                         step.strip()).groups()
-            if dependency not in dependencies:
-                dependencies[dependency] = []
+            dependencies.setdefault(dependency, [])
 
             dependencies[dependency].append(step)
             steps.add(step)
