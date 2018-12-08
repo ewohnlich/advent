@@ -24,4 +24,4 @@ with open('source.txt') as source:
         for col in range(0, len(cloth[row])):
             if cloth[row][col] > 1:
                 total += 1
-    print total
+    print(total)

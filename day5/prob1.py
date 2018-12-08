@@ -17,5 +17,5 @@ def build_polymer(base_polymer):
 
 
 if __name__ == '__main__':
-    print build_polymer('dabAcCaCBAcCcaDA')  # control
-    print build_polymer('dabAcCaCBAcCcaDA')
+    print(build_polymer('dabAcCaCBAcCcaDA') ) # control
+    print(build_polymer('dabAcCaCBAcCcaDA'))

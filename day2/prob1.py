@@ -16,5 +16,5 @@ for box_id in box_ids:
         doubles += 1
     if triple:
         triples += 1
-    
-print doubles * triples
+
+print(doubles * triples)

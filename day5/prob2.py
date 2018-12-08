@@ -14,4 +14,4 @@ def anomalous_unit():
 
 
 if __name__ == '__main__':
-    print anomalous_unit()
+    print(anomalous_unit())

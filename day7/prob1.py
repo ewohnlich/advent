@@ -19,7 +19,7 @@ def get_steps(source='source.txt'):
 def run_steps(steps, dependencies):
     order = []
     while steps:
-        print dependencies
+        print(dependencies)
         ready_step = sorted([step for step in steps if step not in dependencies])[0]
         mfd = []
         order.append(ready_step)
@@ -35,4 +35,4 @@ def run_steps(steps, dependencies):
 
 
 if __name__ == '__main__':
-    print run_steps(*get_steps())
+    print(run_steps(*get_steps()))

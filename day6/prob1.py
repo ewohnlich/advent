@@ -12,7 +12,6 @@ def get_coords():
     return coords
 
 
-html_block = '<div style="height:{size}px; width: {size}px; background-color: #{color}; margin:0; padding: 0; display: inline-block"></div>'
 block_size = 3
 sample = [
     (1, 1),  # A*
@@ -100,7 +99,7 @@ def calc_areas(coords):
     for x in range(xmin - 1, xmax + 2):  # include corner cases
         y = ymax - 1
         wipe_area(x, y)
-    print max(areas)
+    print(max(areas))
     img.save('output.png', format='png')
 
 

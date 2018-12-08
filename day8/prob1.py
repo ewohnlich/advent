@@ -1,5 +1,3 @@
-
-
 def get_data(source='source.txt'):
     with open(source) as source:
         data = [int(i) for i in source.read().split(' ')]
@@ -16,6 +14,7 @@ def build_tree(data):
     for meta in range(num_metadata):
         sum += data.pop()
     return sum
+
 
 if __name__ == '__main__':
     print(build_tree(get_data()))

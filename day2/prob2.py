@@ -20,4 +20,4 @@ def find_match(box_ids):
 
 
 with open('source.txt') as source:
-    print find_match(source.readlines())
+    print(find_match(source.readlines()))

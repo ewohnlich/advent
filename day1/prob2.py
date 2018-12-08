@@ -9,4 +9,4 @@ def get_twice(frqs, curr=0):
 
 unique_frqs = {0}
 with open('source1.txt') as source:
-    print get_twice(source.readlines())
+    print(get_twice(source.readlines()))

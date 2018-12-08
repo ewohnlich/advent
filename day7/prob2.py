@@ -20,7 +20,7 @@ def run_steps_workers(steps, dependencies):
     while steps or in_progress:
         ready_steps = sorted([step for step in steps if step not in dependencies or dependencies[step] == []])
         # stats
-        print '{:03d}'.format(second), ['{:03d}'.format(wtime) for wtime in workers], ready_steps, in_progress
+        print('{:03d}'.format(second), ['{:03d}'.format(wtime) for wtime in workers], ready_steps, in_progress)
         # to progress we need both an available worker and a dependency-free step
         while 0 in workers and ready_steps:
             available_worker = workers.index(0)
@@ -51,6 +51,6 @@ def run_steps_workers(steps, dependencies):
 if __name__ == '__main__':
     import time
     start = time.time()
-    print run_steps_workers(*get_steps('source.txt'))
+    print(run_steps_workers(*get_steps('source.txt')))
 
-    print time.time() - start
+    print(time.time() - start)

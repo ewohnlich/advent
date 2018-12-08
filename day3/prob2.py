@@ -3,7 +3,7 @@ import re
 cloth = {}
 
 
-def iterate_map(id, xoffset, yoffset, width, height):
+def iterate_map(xoffset, yoffset, width, height):
     for row in range(0, height):
         for col in range(0, width):
             y = str(yoffset + row)
@@ -31,9 +31,9 @@ def check_claim(xoffset, yoffset, width, height):
 with open('source.txt') as source:
     claims = source.readlines()
     for line in claims:
-        iterate_map(*parse_claim(line))
+        iterate_map(*parse_claim(line)[1:])
 
     for claim in claims:
         claim_id, xoffset, yoffset, width, height = parse_claim(claim)
         if check_claim(xoffset, yoffset, width, height):
-            print claim_id
+            print(claim_id)

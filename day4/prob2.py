@@ -13,4 +13,4 @@ if __name__ == '__main__':
             guard2_id = guard_id
             highest_max_count = guard_max_count
             minute_for_max_guard = guard_max_minute
-    print int(guard2_id) * minute_for_max_guard
+    print(int(guard2_id) * minute_for_max_guard)

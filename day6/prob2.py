@@ -19,4 +19,4 @@ if __name__ == '__main__':
             distances = get_distances(coords, x, y)
             if distances < threshold:
                 area += 1
-    print area
+    print(area)
