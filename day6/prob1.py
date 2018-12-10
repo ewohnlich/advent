@@ -62,6 +62,7 @@ def calc_areas(coords):
     xmin, xmax, ymin, ymax = get_boundaries(coords)
     img = Image.new('RGB', (xmax - xmin + 1, ymax - ymin + 1))
     pixels = img.load()
+    from PIL import ImageFilter
 
     for y in range(ymin, ymax + 1):
         for x in range(xmin, xmax + 1):
