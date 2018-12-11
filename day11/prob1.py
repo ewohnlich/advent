@@ -3,14 +3,7 @@ import numpy as np
 
 def power_level(xpos, ypos, gsn):
     rack_id = xpos + 10
-    _power = rack_id * ypos
-    _power += gsn
-    _power *= rack_id
-    _power = _power / 100 % 10
-    return _power - 5
-
-
-gsn = 18
+    return (rack_id * ypos + gsn) * rack_id / 100 % 10 - 5
 
 
 def build_grid(gsn):
@@ -25,16 +18,14 @@ def build_grid(gsn):
 def get_max(grid, width=3):
     grid = np.matrix(grid)
     maxsum = 0
-    left = 1
-    top = 1
+    pos = (1, 1)
     for ypos in range(0, len(grid) - width):
         for xpos in range(0, len(grid) - width):
             _sum = grid[xpos:xpos + width, ypos:ypos + width].sum()
             if _sum > maxsum:
-                top = xpos
-                left = ypos
+                pos = (ypos, xpos)
                 maxsum = _sum
-    return maxsum, left, top
+    return (maxsum,) + pos
 
 
 def run_tests():
@@ -51,12 +42,13 @@ def run_tests():
 
 if __name__ == '__main__':
     gsn = 4455
-    print get_max(build_grid(gsn))  # prob1
+    print('Max: {}, @ ({},{})'.format(*get_max(build_grid(gsn))))  # prob1
+
     supermax = []
     for width in range(1, 301):
         maxsum, left, top = get_max(build_grid(gsn), width)
-        if maxsum == 0:
+        if maxsum == 0:  # is this actually valid?
             break
-        print(width, maxsum, left, top)
+        print('Width {: 2d} max: {}, @ ({},{})'.format(width, maxsum, left, top))
         supermax.append((width, maxsum, left, top))
-    print(max(supermax, key=lambda f: f[1]))  # prob2
+    print('Supermax: {}, width={}, @ ({},{})'.format(*max(supermax, key=lambda f: f[1])))  # prob2
