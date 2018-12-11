@@ -51,6 +51,7 @@ def run_tests():
 
 if __name__ == '__main__':
     gsn = 4455
+    print get_max(build_grid(gsn))  # prob1
     supermax = []
     for width in range(1, 301):
         maxsum, left, top = get_max(build_grid(gsn), width)
@@ -58,4 +59,4 @@ if __name__ == '__main__':
             break
         print(width, maxsum, left, top)
         supermax.append((width, maxsum, left, top))
-    print(max(supermax, key=lambda f: f[1]))
+    print(max(supermax, key=lambda f: f[1]))  # prob2
