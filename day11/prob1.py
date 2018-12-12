@@ -1,4 +1,9 @@
+import time
+
+import matplotlib.pyplot as plt
 import numpy as np
+
+start = time.time()
 
 
 def power_level(xpos, ypos, gsn):
@@ -7,11 +12,10 @@ def power_level(xpos, ypos, gsn):
 
 
 def build_grid(gsn):
-    grid = []
+    grid = np.zeros(shape=(300, 300))
     for ypos in range(0, 300):
-        grid.append([])
         for xpos in range(0, 300):
-            grid[ypos].append(power_level(xpos, ypos, gsn))
+            grid[xpos, ypos] = power_level(xpos, ypos, gsn)
     return grid
 
 
@@ -21,10 +25,10 @@ def get_max(grid, width=3):
     pos = (1, 1)
     for ypos in range(0, len(grid) - width):
         for xpos in range(0, len(grid) - width):
-            _sum = grid[xpos:xpos + width, ypos:ypos + width].sum()
-            if _sum > maxsum:
-                pos = (ypos, xpos)
-                maxsum = _sum
+            sum = grid[xpos:xpos + width, ypos:ypos + width].cumsum()
+            # if _sum > maxsum:
+            #     pos = (ypos, xpos)
+            #     maxsum = _sum
     return (maxsum,) + pos
 
 
@@ -43,12 +47,22 @@ def run_tests():
 if __name__ == '__main__':
     gsn = 4455
     print('Max: {}, @ ({},{})'.format(*get_max(build_grid(gsn))))  # prob1
+    grid = build_grid(gsn)
+    p1 = time.time()
+    print(p1-start)
 
     supermax = []
+
+    sums = []
     for width in range(1, 301):
         maxsum, left, top = get_max(build_grid(gsn), width)
+        sums.append(maxsum)
         if maxsum == 0:  # is this actually valid?
             break
         print('Width {: 2d} max: {}, @ ({},{})'.format(width, maxsum, left, top))
         supermax.append((width, maxsum, left, top))
     print('Supermax: {}, width={}, @ ({},{})'.format(*max(supermax, key=lambda f: f[1])))  # prob2
+    print(time.time() - p1)
+
+    plt.plot(sums, linestyle='--', marker='o', color='b')
+    plt.show()
