@@ -5,11 +5,14 @@ def get_start(sf):
     return tracks
 
 
+car_headings = '<^>v'  # turning right
+
+
 class TrackCar(object):
     xpos = 0
     ypos = 0
     direction = None
-    last_turn = 'right'
+    last_turn = 2
 
     def __init__(self, id, x, y, direction):
         self.xpos = x
@@ -22,45 +25,20 @@ class TrackCar(object):
 
 
 def resolve_intersection(car):
-    intersection_order = ['left', 'straight', 'right']
-    next_turn = intersection_order[(intersection_order.index(car.last_turn) + 1) % len(intersection_order)]
-    car.last_turn = next_turn
+    """ get orientation based on ordering of right turns as defined by car_headings
+        left is negative, right is positive
+    """
+    this_turn = (car.last_turn + 1) % 3 - 1  # -1 left, 0 straight, 1 right
+    car.last_turn = this_turn + 1  # reset to [0,1,2]
+    car.direction = car_headings[(car_headings.index(car.direction) + this_turn) % 4]
     if car.direction == '<':
-        if next_turn == 'left':
-            car.ypos += 1
-            car.direction = 'v'
-        elif next_turn == 'right':
-            car.ypos -= 1
-            car.direction = '^'
-        else:
-            car.xpos -= 1
+        car.xpos -= 1
     elif car.direction == '>':
-        if next_turn == 'left':
-            car.ypos -= 1
-            car.direction = '^'
-        elif next_turn == 'right':
-            car.ypos += 1
-            car.direction = 'v'
-        else:
-            car.xpos += 1
+        car.xpos += 1
     elif car.direction == 'v':
-        if next_turn == 'left':
-            car.xpos += 1
-            car.direction = '>'
-        elif next_turn == 'right':
-            car.xpos -= 1
-            car.direction = '<'
-        else:
-            car.ypos += 1
-    elif car.direction == '^':
-        if next_turn == 'left':
-            car.xpos -= 1
-            car.direction = '<'
-        elif next_turn == 'right':
-            car.xpos += 1
-            car.direction = '>'
-        else:
-            car.ypos -= 1
+        car.ypos += 1
+    else:
+        car.ypos -= 1
 
 
 def print_track(tracks, cars):
@@ -132,12 +110,12 @@ def zoomies(tracks, cars):
 
 def build_tracks(source='example.txt'):
     tracks = get_start(source)
-    car_markers = '<>^v'
+
     cars = []
     id = 1
     for y in range(len(tracks)):
         for x in range(len(tracks[y])):
-            if tracks[y][x] in car_markers:
+            if tracks[y][x] in car_headings:
                 cars.append(TrackCar(id, x, y, tracks[y][x]))
                 id += 1
     real_track = {'<': '-', '>': '-', 'v': '|', '^': '|'}
