@@ -141,6 +141,7 @@ def build_tracks(source='example.txt'):
                 cars.append(TrackCar(id, x, y, tracks[y][x]))
                 id += 1
     real_track = {'<': '-', '>': '-', 'v': '|', '^': '|'}
+    # remove the cars
     for car in cars:
         tracks[car.ypos][car.xpos] = real_track[car.direction]
 
