@@ -9,7 +9,7 @@ def get_recipes(num):
             new_recipes.append(0)
         while curr > 0:
             new_recipes.append(curr % 10)
-            curr /= 10
+            curr = int(curr / 10)
         new_recipes.reverse()
         recipes += new_recipes
 
